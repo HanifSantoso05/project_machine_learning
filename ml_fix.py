@@ -78,7 +78,7 @@ with st.container():
         </ol> 
         """,unsafe_allow_html=True)
         st.write("#### Dataset")
-        df = pd.read_csv(r"C:\Users\HP\ulasan_bj_pn.csv")
+        df = pd.read_csv("ulasan_bj_pn.csv")
         df = df.drop(columns=['nama','sentiment','score'])
         st.write(df)
     elif selected == "Implementation":
@@ -135,7 +135,7 @@ with st.container():
             slang_dict = json.loads(data)
 
             #Dataset
-            Data_ulasan = pd.read_csv(r"C:\Users\HP\dataprep.csv")
+            Data_ulasan = pd.read_csv("dataprep.csv")
             ulasan_dataset = Data_ulasan['ulasan']
             sentimen = Data_ulasan['label']
 
@@ -144,19 +144,14 @@ with st.container():
             tfidf_wm = tfidfvectorizer.fit_transform(ulasan_dataset)
             tfidf_tokens = tfidfvectorizer.get_feature_names_out()
             df_tfidfvect = pd.DataFrame(data = tfidf_wm.toarray(),columns = tfidf_tokens)
-            with open('modelml.pkl', 'rb') as file:
-                loaded_model = pickle.load(file)
             
-            # with open('tfidf.pkl', 'rb') as file:
-            #     loaded_data_tfid = pickle.load(file)
-            
-            # tfidf_wm = loaded_data_tfid.fit_transform(names)
-
             #Train test split
             training, test = train_test_split(tfidf_wm,test_size=0.2, random_state=1)#Nilai X training dan Nilai X testing
             training_label, test_label = train_test_split(sentimen, test_size=0.2, random_state=1)#Nilai Y training dan Nilai Y testing    
 
             # model
+            with open('modelml.pkl', 'rb') as file:
+                loaded_model = pickle.load(file)
             clf = loaded_model.fit(training,training_label)
             y_pred=clf.predict(test)
 
