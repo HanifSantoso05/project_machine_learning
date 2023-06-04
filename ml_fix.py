@@ -3,7 +3,7 @@ import streamlit as st
 import pandas as pd 
 import numpy as np
 import regex as re
-import jsons as json
+import json
 import nltk
 nltk.download('stopwords')
 nltk.download('punkt')
